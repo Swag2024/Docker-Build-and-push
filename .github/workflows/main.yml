@@ -61,7 +61,6 @@ jobs:
     needs: [build]
     env: 
       REGISTRY: ghcr.io
-      usename: Swag2024
       IMAGE_NAME: ${{github.repository}}
     outputs:
        image_tag: ${{ steps.set_output.outputs.image_tag }}
@@ -79,7 +78,7 @@ jobs:
        uses: docker/login-action@v3
        with:
          registry: ${{ env.REGISTRY }}
-         usename: ${{ github.actor }}
+         username: ${{ github.actor }}
          password: ${{ secrets.TOKEN }}
     -  name: metadata for docker
        id: meta
