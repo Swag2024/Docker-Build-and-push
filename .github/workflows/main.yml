@@ -84,7 +84,7 @@ jobs:
        id: meta
        uses: docker/metadata-action@v5
        with:
-         images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+         images: ${{ env.REGISTRY }}/${{ github.repository_owner_name }}/${{ env.IMAGE_NAME }}
          tags: |
            type=raw,value=latest
     -  name: build docker imgae
@@ -97,7 +97,7 @@ jobs:
     -  name: runtrivy
        uses: aquasecurity/trivy-action@master
        with:
-         image-ref : ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+         image-ref : ${{ env.REGISTRY }}/${{ github.repository_owner_name }}/${{ env.IMAGE_NAME }}
          format : 'table'
          exit-code : '1'
          ignore-unfixed : true
