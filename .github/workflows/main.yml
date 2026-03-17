@@ -121,7 +121,6 @@ jobs:
     steps:
       -  name: checkout code
          uses: actions/checkout@v5
-         with: ${{ secrets.TOKEN }}
       -  name: setup config
          run: |
            git config user.name "Github Actions"
@@ -132,7 +131,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           REGISTRY: ghcr.io
          run: |
-           NEW_IMAGE=" ghcr.io/swag2024/tictoc:${IMAGE_TAG}}" 
+           NEW_IMAGE= "ghcr.io/swag2024/tictoc:${IMAGE_TAG}}" 
            sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
            echo "Updated deployment to use image: ${NEW_IMAGE}"
            grep -A 1 "image:" kubernetes/deployment.yaml
