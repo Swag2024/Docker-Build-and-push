@@ -61,7 +61,7 @@ jobs:
     needs: [build]
     env: 
       REGISTRY: ghcr.io
-      IMAGE_NAME: tictoc
+      IMAGE_NAME: tictocnew
     outputs:
        image_tag: ${{ steps.set_output.outputs.image_tag }}
     steps:
