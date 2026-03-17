@@ -117,7 +117,7 @@ jobs:
     name: Update Kubernetes Deployment
     runs-on: ubuntu-latest
     needs: ['docker']
-    if : github.ref == 'refs/head/main' && github.event_name == 'push'
+    if : github.ref == 'refs/head/main' 
     steps:
       -  name: checkout code
          uses: action/checkoutcode@v5
