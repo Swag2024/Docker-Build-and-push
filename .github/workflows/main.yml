@@ -120,7 +120,7 @@ jobs:
     if : github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       -  name: checkout code
-         uses: action/checkoutcode@v5
+         uses: actions/checkout@v5
          with: ${{ secrets.TOKEN }}
       -  name: setup config
          run: |
