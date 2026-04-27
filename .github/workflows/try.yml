@@ -21,7 +21,7 @@ jobs:
           echo "Starting VM..."
           az vm start \
             --resource-group test \
-            --name vm-dev
+            --name server1
 
       - name: Wait for VM boot
         run: sleep 60
@@ -30,7 +30,7 @@ jobs:
   run-on-second-runner:
     name: Run Job on Second Runner
     needs: start-runner-vm
-    runs-on: [self-hosted, runner-2]   # 👈 IMPORTANT
+    runs-on: test   # 👈 IMPORTANT
 
     steps:
       - name: Debug runner
