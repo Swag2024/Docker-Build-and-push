@@ -1,0 +1,72 @@
+name: Auto Scale Runner Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start-runner-vm:
+    name: Start Second Runner VM
+    runs-on: self-hosted   # Runner-1
+
+    steps:
+      - name: Install Azure CLI
+        run: |
+          if ! command -v az &> /dev/null
+          then
+            echo "Installing Azure CLI..."
+            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          fi
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Start VM
+        run: |
+          echo "Starting VM..."
+          az vm start \
+            --resource-group test \
+            --name dev-vm
+
+      - name: Wait for VM boot
+        run: sleep 60
+
+
+  run-on-second-runner:
+    name: Run Job on Second Runner
+    needs: start-runner-vm
+    runs-on: [self-hosted, runner-2]   # 👈 IMPORTANT
+
+    steps:
+      - name: Debug runner
+        run: |
+          echo "Running on:"
+          hostname
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run your tasks
+        run: |
+          echo "Code is running on second runner"
+          # yaha tum apna docker build / terraform / pipeline daal sakte ho
+
+
+  stop-runner-vm:
+    name: Stop Second Runner VM
+    needs: run-on-second-runner
+    runs-on: self-hosted   # Runner-1
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Stop VM
+        run: |
+          echo "Stopping VM..."
+          az vm deallocate \
+            --resource-group test \
+            --name dev-vm
