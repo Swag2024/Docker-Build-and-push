@@ -9,8 +9,6 @@ jobs:
     runs-on: self-hosted   # Runner-1
 
     steps:
-    
-
       - name: Login to Azure
         uses: azure/login@v2
         with:
