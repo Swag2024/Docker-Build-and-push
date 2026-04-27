@@ -5,7 +5,7 @@ on:
 
 jobs:
   start-runner-vm:
-    runs-on: self-hosted   # Runner 1 (already running)
+    runs-on: self-hosted
 
     steps:
       - name: Login to Azure
@@ -18,21 +18,20 @@ jobs:
 
       - name: Start VM
         run: |
-          az vm start 
-            --resource-group test
+          az vm start \
+            --resource-group test \
             --name dev-vm
 
   run-on-second-runner:
     needs: start-runner-vm
-    runs-on: self-hosted   # 👈 IMPORTANT label
+    runs-on: [self-hosted, runner-2]   # 👈 change this
 
     steps:
       - name: Wait for runner to be ready
-        run: sleep 60   # ya retry logic lagao
+        run: sleep 60
 
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Run your tasks
-        run: |
-          echo "Running on second runner"
+        run: echo "Running on second runner"
