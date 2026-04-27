@@ -16,10 +16,9 @@ jobs:
 
       - name: Start VM
         run: |
-          echo "Starting VM..."
-          az vm start \
-            --resource-group test \
-            --name server1
+           az vm start `
+           --resource-group test `
+           --name dev-vm
 
       - name: Wait for VM boot
         run: sleep 60
