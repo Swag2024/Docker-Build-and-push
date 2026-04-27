@@ -1,0 +1,38 @@
+name: Start VM and Run on Second Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start-runner-vm:
+    runs-on: Agent   # Runner 1 (already running)
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Start VM
+        run: |
+          az vm start 
+            --resource-group test
+            --name dev-vm
+
+  run-on-second-runner:
+    needs: start-runner-vm
+    runs-on: dev-vm   # 👈 IMPORTANT label
+
+    steps:
+      - name: Wait for runner to be ready
+        run: sleep 60   # ya retry logic lagao
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run your tasks
+        run: |
+          echo "Running on second runner"
