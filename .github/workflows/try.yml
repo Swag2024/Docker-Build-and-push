@@ -44,7 +44,6 @@ jobs:
       - name: Run your tasks
         run: |
           echo "Code is running on second runner"
-          # yaha tum apna docker build / terraform / pipeline daal sakte ho
 
 
   
